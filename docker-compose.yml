@@ -13,18 +13,6 @@ services:
     volumes:
       - ./mysqldata:/var/lib/mysql
 
-  app:
-    image: yiisoftware/yii2-php:7.1-apache
-    volumes:
-      - ./src/composer/cache:/root/.composer/cache:delegated
-      - ./src/basic:/app:delegated
-    environment:
-      DDBB_NAME: pwa2019
-      DDBB_HOST: db
-      DDBB_USER: pwauser
-      DDBB_PASSWORD: pwa123
-    ports:
-      - 8000:80
 
   PHPMyAdmin:
     image: phpmyadmin/phpmyadmin
@@ -35,3 +23,17 @@ services:
       PMA_PASSWORD: pwa123
     ports:
       - 8001:80
+
+  app:
+    image: yiisoftware/yii2-php:7.1-apache
+    volumes:
+      - ./src/composer/cache:/root/.composer/cache:delegated
+      - ./src/basic:/app:delegated
+    environment:
+      DDBB_NAME: pwa2019
+      DDBB_HOST: db
+      DDBB_USER: pwauser
+      DDBB_PASSWORD: pwa123
+      PRODUCCION: 0
+    ports:
+      - 8000:80
