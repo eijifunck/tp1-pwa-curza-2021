@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use yii\web\IdentityInterface;
 /**
  * This is the model class for table "usuario".
  *
@@ -15,7 +15,7 @@ use Yii;
  * @property string $accessToken
  * @property string $authKey
  */
-class Usuario extends \yii\db\ActiveRecord implements yii\web\IdentityInterface
+class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
 {
     /**
      * {@inheritdoc}
