@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Usuario;
 use app\models\UsuarioSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,8 +70,25 @@ class UsuarioController extends Controller
         $model = new Usuario();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load(Yii::$app->request->post()))
+            {
+                if ($model->validate())
+                {
+                    $model->username= $_POST['Usuario']['username'];
+                    $model->nombre= $_POST['Usuario']['nombre'];
+                    $model->apellido= $_POST['Usuario']['apellido'];
+                    $model->password= password_hash($_POST['Usuario']['password'], PASSWORD_BCRYPT);
+                    $model->authKey= md5(random_bytes(5));
+                    $model->accessToken= password_hash(random_bytes(5), PASSWORD_DEFAULT);
+                    if ($model->save())
+                    {
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    } else {
+                        $model->getErrors();
+                    }
+                } else {
+                    $model->getErrors();
+                }
             }
         } else {
             $model->loadDefaultValues();
